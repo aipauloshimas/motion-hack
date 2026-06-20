@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+venv/
+
+# local inputs/outputs, never commit a creator's media or transcripts
+*.mp4
+*.mov
+*.m4a
+*.wav
+*.mp3
+transcript*.json
