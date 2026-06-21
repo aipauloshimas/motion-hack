@@ -27,11 +27,15 @@ First transcription downloads a Whisper model (~140MB) once. See README.md for p
 1. Transcribe the video word-level:
    `python scripts/transcribe.py <video> base transcript.json`
    Every word comes back with start/end seconds.
-2. Auto-detect beats from the transcript: split on natural pauses and phrase boundaries. Aim for **1.4s or more per beat** so each visual can breathe and lip-sync. If the speech is too fast for the number of beats, use fewer beats and tell the creator.
-3. Assign one collage style per beat. With refs, describe each faithfully and spread them across beats; without, pick distinct easy-to-render collage looks.
-4. Build the prompt with `references/prompt-template.md`, filling the real timestamps from the transcript.
-5. Output the prompt in **both English and Chinese** (Chinese tends to adhere better on Seedance; English for the creator to read). Speech and on-screen text stay in the creator's language.
-6. Tell the creator: upload **only the video** to Seedance, then paste the prompt.
+2. **Show the creator the full transcription with timestamps**, as a clean visual table (every word with its start and end time, grouped into the detected beats). This is the timing backbone and lets the creator see exactly where each word lands. Example row format: `word | start to end`.
+3. Auto-detect beats from the transcript: split on natural pauses and phrase boundaries. Aim for **1.4s or more per beat** so each visual can breathe and lip-sync. If the speech is too fast for the number of beats, use fewer beats and tell the creator.
+4. Assign one style per beat (collage is the flagship). With refs, describe each faithfully and spread them across beats; without, pick distinct easy-to-render looks.
+5. Build the prompt with `references/prompt-template.md`, filling the real timestamps from the transcript.
+6. **Deliver all three to the creator:**
+   - the full **transcription table with timestamps**,
+   - the **beat + style + motion-graphic breakdown** table,
+   - the **prompt in both English and Chinese** (Chinese tends to adhere better on Seedance; English to read or to try on Gemini Omni). Speech and on-screen text stay in the creator's language.
+7. Tell the creator: upload **only the video** to Seedance, then paste the prompt.
 
 ## Non-negotiable prompt rules
 - **Person consistency:** every shot is the same person from the video; only the style changes.
