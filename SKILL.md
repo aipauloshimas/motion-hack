@@ -21,7 +21,7 @@ First transcription downloads a Whisper model (~140MB) once. See README.md for p
 
 ## Inputs
 - **Required:** the talking-head video (any language).
-- **Optional but recommended:** a few collage style reference images (e.g. Pinterest finds). Look at them to describe each style faithfully. With no refs, propose strong distinct collage looks or ask the creator.
+- **Optional but recommended:** a few collage style reference images (e.g. Pinterest finds). Look at them to describe each style faithfully. With no refs, pick from `references/style-library.md` or ask the creator.
 
 ## Workflow
 1. Transcribe the video word-level:
@@ -29,7 +29,7 @@ First transcription downloads a Whisper model (~140MB) once. See README.md for p
    Every word comes back with start/end seconds.
 2. **Show the creator the full transcription with timestamps**, as a clean visual table (every word with its start and end time, grouped into the detected beats). This is the timing backbone and lets the creator see exactly where each word lands. Example row format: `word | start to end`.
 3. Auto-detect beats from the transcript: split on natural pauses and phrase boundaries. Aim for **1.4s or more per beat** so each visual can breathe and lip-sync. If the speech is too fast for the number of beats, use fewer beats and tell the creator.
-4. Assign one style per beat (collage is the flagship). With refs, describe each faithfully and spread them across beats; without, pick distinct easy-to-render looks.
+4. Assign one style per beat (collage is the flagship). With refs, describe each faithfully and spread them across beats; without refs, pick distinct styles from `references/style-library.md` (a menu of proven looks), one per beat for variety.
 5. Build the prompt with `references/prompt-template.md`, filling the real timestamps from the transcript.
 6. **Deliver all three to the creator:**
    - the full **transcription table with timestamps**,
@@ -52,4 +52,4 @@ First transcription downloads a Whisper model (~140MB) once. See README.md for p
 - Asking Seedance to render the real footage inside a motion graphic (it glitches). Use the look only (a film strip, an old camera), never embed the actual video.
 - Long baked-in text (it warps). Keep on-screen text short.
 
-See `references/prompt-template.md` for the full bilingual prompt skeleton, the motion-graphic idea library, and a worked example.
+See `references/prompt-template.md` for the full bilingual prompt skeleton, the motion-graphic idea library, and a worked example. See `references/style-library.md` for the menu of styles to assign per beat.
