@@ -38,18 +38,23 @@ First transcription downloads a Whisper model (~140MB) once. See README.md for p
 7. Tell the creator: upload **only the video** to Seedance, then paste the prompt.
 
 ## Non-negotiable prompt rules
-- **Person consistency:** every shot is the same person from the video; only the style changes.
-- **Full-frame:** each style fills the whole frame edge to edge, never a centered patch with empty borders.
-- **Lip-sync on every shot,** copied 1:1 from the reference video, including abstract styles.
+- **Never write a meta-warning about captions vs speech.** Lines like "the text is not the script" make Seedance speak only the captions and truncate the line. Instead attribute the exact spoken phrase per beat and state the full spoken line once (see gotcha #1 in `prompt-template.md`).
+- **Person consistency + identity anchor:** every shot is the same recognizable person; each beat keeps the real traits (beard, beanie, face shape) and only repaints them in that beat's material. Only the style changes.
+- **Full-frame in every beat:** each style fills the whole frame edge to edge, background included, no untouched/photographic area, never a centered patch with empty borders. Repeat it per beat, not just globally.
+- **Lip-sync on every shot,** copied 1:1 from the reference video, including abstract styles. State the full spoken line so it does not stop early.
 - **Motion graphics illustrate the words** (literal, in cut-paper material), entering on the matching word. Match the MG to the active style (e.g. shattered style means numbers that assemble from shards).
 - **Text never covers the face.** Captions sit above the head or below the chin only.
 - **Animated transitions, never hard cuts** (morph, paper shuffle, spray wipe, tear).
 - **SFX only, no background music.** Every transition and motion graphic gets its own timestamped SFX.
 
 ## Common mistakes
+- A meta-warning about captions (makes it speak only the captions). Never explain "text vs speech"; attribute the spoken phrase per beat instead.
 - Text over the mouth (kills lip-sync readability). Keep it above or below the face.
 - Too many beats for a short clip (rushed cuts). Fewer beats, each 1.4s or more.
+- Stylizing only the face and leaving the background normal. Force full-frame per beat.
+- Abstract styles (cubist, 8-bit, glitch) turning the face generic. Anchor identity hard, or push the abstraction to the background and keep the face recognizable.
+- Engineering specs (percentages, degrees, pixels, opacity). Describe motion and look qualitatively; only beat timestamps in seconds are numeric.
 - Asking Seedance to render the real footage inside a motion graphic (it glitches). Use the look only (a film strip, an old camera), never embed the actual video.
-- Long baked-in text (it warps). Keep on-screen text short.
+- Long baked-in text (it warps). Keep on-screen text short, or add kinetic captions in post (you already have word-level timestamps).
 
-See `references/prompt-template.md` for the full bilingual prompt skeleton, the motion-graphic idea library, and a worked example. See `references/style-library.md` for the menu of styles to assign per beat.
+See `references/prompt-template.md` for the full bilingual prompt skeleton, the **gotchas / pro-tips** section, the motion-graphic idea library, and a worked example. See `references/style-library.md` for the menu of styles to assign per beat.
