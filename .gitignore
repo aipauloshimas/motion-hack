@@ -11,3 +11,8 @@ venv/
 *.wav
 *.mp3
 transcript*.json
+
+# extracted identity-anchor frames (local only)
+frames/
+frame_*.png
+*.png

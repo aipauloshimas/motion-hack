@@ -13,33 +13,38 @@ Turn a short talking-head video into a Seedance 2.0 prompt for an animated motio
 - They want the visuals (styles, text, effects) to land exactly on the words.
 - They want a ready-to-paste Seedance 2.0 prompt in English and Chinese.
 
-## Setup (one time, free and local, no API keys)
-- Python 3.8+
-- ffmpeg on PATH (Whisper reads audio through it)
-- `pip install -r requirements.txt` (installs openai-whisper)
-First transcription downloads a Whisper model (~140MB) once. See README.md for per-OS install commands.
+## Setup (plug and play — the skill checks this for you)
+This skill needs **Python 3.8+**, **ffmpeg** (which includes **ffprobe**), and the **openai-whisper** package. Everything is free, local and needs no API keys.
+
+You do not have to set this up by hand. **Step 1 of the workflow runs `scripts/check_env.py`**, which reports exactly what is present, what is missing, what each piece is FOR, and the install command for the user's OS. The only thing you must have first is Python itself (the bootstrap): if `python` does not run, install Python 3.8+, then let the check handle the rest. Install missing pieces only with the user's permission. First transcription downloads a Whisper model (~140MB) once. See README.md for per-OS install commands.
 
 ## Inputs
 - **Required:** the talking-head video (any language).
 - **Optional but recommended:** a few collage style reference images (e.g. Pinterest finds). Look at them to describe each style faithfully. With no refs, pick from `references/style-library.md` or ask the creator.
 
 ## Workflow
-1. Transcribe the video word-level:
+1. **Preflight — make the environment ready first.** Run:
+   `python scripts/check_env.py`
+   It checks Python, ffmpeg, ffprobe and openai-whisper. If everything is present, continue. If anything is missing, the script prints what each missing piece is FOR and the exact install command for this OS. **Explain that to the user, ask permission, install it, then re-run the check.** Never install silently and never proceed with a missing dependency.
+2. Transcribe the video word-level:
    `python scripts/transcribe.py <video> base transcript.json`
    Every word comes back with start/end seconds.
-2. **Show the creator the full transcription with timestamps**, as a clean visual table (every word with its start and end time, grouped into the detected beats). This is the timing backbone and lets the creator see exactly where each word lands. Example row format: `word | start to end`.
-3. Auto-detect beats from the transcript: split on natural pauses and phrase boundaries. Aim for **1.4s or more per beat** so each visual can breathe and lip-sync. If the speech is too fast for the number of beats, use fewer beats and tell the creator.
-4. Assign one style per beat (collage is the flagship). With refs, describe each faithfully and spread them across beats; without refs, pick distinct styles from `references/style-library.md` (a menu of proven looks), one per beat for variety.
-5. Build the prompt with `references/prompt-template.md`, filling the real timestamps from the transcript.
-6. **Deliver all three to the creator:**
+3. **Look at the speaker to anchor identity.** Extract a couple of frames and view them:
+   `python scripts/frames.py <video> 3 frames`
+   Open the PNGs and note the person's real traits (hair, facial hair, headwear, glasses, skin tone, clothing). You reuse these verbatim in the identity anchor so the face stays the same recognizable person in every beat. Never guess the traits — describe what the frames actually show.
+4. **Show the creator the full transcription with timestamps**, as a clean visual table (every word with its start and end time, grouped into the detected beats). This is the timing backbone and lets the creator see exactly where each word lands. Example row format: `word | start to end`.
+5. Auto-detect beats from the transcript: split on natural pauses and phrase boundaries. Aim for **1.4s or more per beat** so each visual can breathe and lip-sync. If the speech is too fast for the number of beats, use fewer beats and tell the creator.
+6. Assign one style per beat (collage is the flagship). With refs, describe each faithfully and spread them across beats; without refs, pick distinct styles from `references/style-library.md` (a menu of proven looks), one per beat for variety.
+7. Build the prompt with `references/prompt-template.md`, filling the real timestamps from the transcript and the real traits from the frames.
+8. **Deliver all three to the creator:**
    - the full **transcription table with timestamps**,
    - the **beat + style + motion-graphic breakdown** table,
    - the **prompt in both English and Chinese** (Chinese tends to adhere better on Seedance; English to read or to try on Gemini Omni). Speech and on-screen text stay in the creator's language.
-7. Tell the creator: upload **only the video** to Seedance, then paste the prompt.
+9. Tell the creator: upload **only the video** to Seedance, then paste the prompt.
 
 ## Non-negotiable prompt rules
 - **Never write a meta-warning about captions vs speech.** Lines like "the text is not the script" make Seedance speak only the captions and truncate the line. Instead attribute the exact spoken phrase per beat and state the full spoken line once (see gotcha #1 in `prompt-template.md`).
-- **Person consistency + identity anchor:** every shot is the same recognizable person; each beat keeps the real traits (beard, beanie, face shape) and only repaints them in that beat's material. Only the style changes.
+- **Person consistency + identity anchor:** every shot is the same recognizable person; each beat keeps the real traits (read them off the extracted frames — hair, facial hair, headwear, glasses, skin tone, clothing) and only repaints them in that beat's material. Only the style changes.
 - **Full-frame in every beat:** each style fills the whole frame edge to edge, background included, no untouched/photographic area, never a centered patch with empty borders. Repeat it per beat, not just globally.
 - **Lip-sync on every shot,** copied 1:1 from the reference video, including abstract styles. State the full spoken line so it does not stop early.
 - **Motion graphics illustrate the words** (literal, in cut-paper material), entering on the matching word. Match the MG to the active style (e.g. shattered style means numbers that assemble from shards).
